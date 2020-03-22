@@ -77,7 +77,9 @@ if __name__ == '__main__':
     load_dotenv()
     telebot_token = getenv('TELEGRAM_BOT_TOKEN')
     logger_chat_id = getenv('LOGGER_CHAT_ID')
-    environ['GOOGLE_APPLICATION_CREDENTIALS'] = getenv('GOOGLE_CRED')
+    google_credentials_file = getenv('GOOGLE_CRED')
+    if google_credentials_file:
+        environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_credentials_file
     dialogflow_project_id = getenv('DIALOG_FLOW_ID')
     updater = Updater(token=telebot_token)
     logger = set_insta_bot_logging('info', telebot_token, logger_chat_id)

@@ -78,7 +78,9 @@ def text_message(vk_session, vk):
 if __name__ == '__main__':
     load_dotenv()
     vk_token = getenv('VK_TOKEN')
-    environ['GOOGLE_APPLICATION_CREDENTIALS'] = getenv('GOOGLE_CRED')
+    google_credentials_file = getenv('GOOGLE_CRED')
+    if google_credentials_file:
+        environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_credentials_file
     dialogflow_project_id = getenv('DIALOG_FLOW_ID')
     telebot_token = getenv('TELEGRAM_BOT_TOKEN')
     logger_chat_id = getenv('LOGGER_CHAT_ID')
