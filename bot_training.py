@@ -37,7 +37,7 @@ def load_json(intent_file):
 
 def train_agent(dialogflow_project_id):
     client = dialogflow.AgentsClient()
-    parent = client.project_path('{0}'.format(dialogflow_project_id))
+    parent = client.project_path(str(dialogflow_project_id))
     try:
         client.train_agent(parent)
     except exceptions.BadRequest as error:
@@ -60,7 +60,7 @@ def parse_json_for_dialog_flow_intent(raw_intent_json):
 
 def create_intent(intent_list, dialogflow_project_id):
     client = dialogflow.IntentsClient()
-    parent = client.project_agent_path('{0}'.format(dialogflow_project_id))
+    parent = client.project_agent_path(str(dialogflow_project_id))
     for intent in intent_list:
         try:
             client.create_intent(parent, intent)
