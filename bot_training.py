@@ -41,19 +41,19 @@ def train_agent(dialogflow_project_id):
     client.train_agent(parent)
 
 
-def parse_json_for_dialog_flow_intent(raw_intent_json):
-    parsed_intents_list = []
-    for intent_name, intent_params in raw_intent_json.items():
+def parse_raw_intents_for_dialog_flow(raw_intents):
+    parsed_intents = []
+    for intent_name, intent_params in raw_intents.items():
+        training_phrases = []
+        for question in intent_params['questions']:
+            training_phrases.append({'parts': [{'text': question}]})
         intent = {
             'display_name': intent_name,
             'messages': [{'text': {'text': [intent_params['answer']]}}],
-            'training_phrases': [
-                {'parts': [{'text': question}]} for
-                question in intent_params['questions']
-                ],
+            'training_phrases': training_phrases,
         }
-        parsed_intents_list.append(intent)
-    return parsed_intents_list
+        parsed_intents.append(intent)
+    return parsed_intents
 
 
 def create_intent(intent, dialogflow_project_id):
@@ -68,11 +68,11 @@ if __name__ == '__main__':
     dialogflow_project_id = getenv('DIALOG_FLOW_ID')
     cli_args = parse_args()
     intent_file = cli_args.intent_file
-    raw_intent_json = load_json(intent_file)
-    intent_list = parse_json_for_dialog_flow_intent(
-        raw_intent_json,
+    raw_intents = load_json(intent_file)
+    parsed_intents = parse_raw_intents_for_dialog_flow(
+        raw_intents,
         )
-    for intent in intent_list:
+    for intent in parsed_intents:
         try:
             create_intent(intent, dialogflow_project_id)
             train_agent(dialogflow_project_id)
