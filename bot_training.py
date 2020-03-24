@@ -44,22 +44,22 @@ def train_agent(dialogflow_project_id):
 def parse_json_for_dialog_flow_intent(raw_intent_json):
     parsed_intents_list = []
     for intent_name, intent_params in raw_intent_json.items():
-        intent = {}
-        intent['display_name'] = intent_name
-        intent['messages'] = [{'text': {'text': [intent_params['answer']]}}]
-        intent['training_phrases'] = [
-            {'parts': [{'text': question}]} for
-            question in intent_params['questions']
-            ]
+        intent = {
+            'display_name': intent_name,
+            'messages': [{'text': {'text': [intent_params['answer']]}}],
+            'training_phrases': [
+                {'parts': [{'text': question}]} for
+                question in intent_params['questions']
+                ],
+        }
         parsed_intents_list.append(intent)
     return parsed_intents_list
 
 
-def create_intent(intent_list, dialogflow_project_id):
+def create_intent(intent, dialogflow_project_id):
     client = dialogflow.IntentsClient()
     parent = client.project_agent_path(str(dialogflow_project_id))
-    for intent in intent_list:
-        client.create_intent(parent, intent)
+    client.create_intent(parent, intent)
 
 
 if __name__ == '__main__':
@@ -72,12 +72,13 @@ if __name__ == '__main__':
     intent_list = parse_json_for_dialog_flow_intent(
         raw_intent_json,
         )
-    try:
-        create_intent(intent_list, dialogflow_project_id)
-        train_agent(dialogflow_project_id)
-        print('Training bot procedure completed!')
-    except exceptions.BadRequest as error:
-        print('Exception occured during training bot procedure:\n{0}'.format(
-            error,
-            ),
-              )
+    for intent in intent_list:
+        try:
+            create_intent(intent, dialogflow_project_id)
+            train_agent(dialogflow_project_id)
+        except exceptions.BadRequest as error:
+            print('Exception occured during training bot procedure:\n{0}'.format(
+                error,
+                ),
+                  )
+    print('Training bot procedure completed!')
