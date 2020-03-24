@@ -23,7 +23,7 @@ def check_file_path(file_path):
     return file_path
 
 
-def arg_parser():
+def init_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('intent_file', type=check_file_path)
     return parser.parse_args()
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     load_dotenv()
     environ['GOOGLE_APPLICATION_CREDENTIALS'] = getenv('GOOGLE_CRED')
     dialogflow_project_id = getenv('DIALOG_FLOW_ID')
-    cli_args = arg_parser()
+    cli_args = init_arg_parser()
     intent_file = cli_args.intent_file
     raw_intent_json = load_json(intent_file)
     intent_list = parse_json_for_dialog_flow_intent(
