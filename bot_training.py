@@ -38,10 +38,7 @@ def load_json(intent_file):
 def train_agent(dialogflow_project_id):
     client = dialogflow.AgentsClient()
     parent = client.project_path(str(dialogflow_project_id))
-    try:
-        client.train_agent(parent)
-    except exceptions.BadRequest as error:
-        print(error)
+    client.train_agent(parent)
 
 
 def parse_json_for_dialog_flow_intent(raw_intent_json):
@@ -62,10 +59,7 @@ def create_intent(intent_list, dialogflow_project_id):
     client = dialogflow.IntentsClient()
     parent = client.project_agent_path(str(dialogflow_project_id))
     for intent in intent_list:
-        try:
-            client.create_intent(parent, intent)
-        except exceptions.BadRequest as error:
-            print(error)
+        client.create_intent(parent, intent)
 
 
 if __name__ == '__main__':
@@ -78,6 +72,12 @@ if __name__ == '__main__':
     intent_list = parse_json_for_dialog_flow_intent(
         raw_intent_json,
         )
-    create_intent(intent_list, dialogflow_project_id)
-    train_agent(dialogflow_project_id)
-    print('Training bot procedure completed!')
+    try:
+        create_intent(intent_list, dialogflow_project_id)
+        train_agent(dialogflow_project_id)
+        print('Training bot procedure completed!')
+    except exceptions.BadRequest as error:
+        print('Exception occured during training bot procedure:\n{0}'.format(
+            error,
+            ),
+              )
