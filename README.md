@@ -56,11 +56,11 @@ Python3 should be already installed.
 ## How to run local
 
 At first, you need to train your bot, using dialogflow intents. It is a quite simple.  
-All you need is a json file with intents body. You can find a demo intents `job_questions` in project folder.  
-So let's train bot whith the demo intents:  
+All you need is a json file with intents body. You can find a demo intent file `demo_intent.json` in project folder.  
+So, let's train bot whith the demo intents:  
 
 ```bash
-    python3 bot_training.py ./job_questions
+    python3 bot_training.py ./demo_intent.json
 ```
 
 Now we are ready to start our bots:
