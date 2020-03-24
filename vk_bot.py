@@ -57,7 +57,7 @@ def invoke_dialog_flow(text):
     return response.query_result.fulfillment_text
 
 
-def text_message(vk_session, vk):
+def handle_text_message(vk_session, vk):
     while True:
         try:
             longpoll = VkLongPoll(vk_session)
@@ -88,4 +88,4 @@ if __name__ == '__main__':
     logger.info('Bot {0} has started!'.format(__file__))
     vk_session = vk_api.VkApi(token=vk_token)
     vk = vk_session.get_api()
-    text_message(vk_session, vk)
+    handle_text_message(vk_session, vk)

@@ -62,7 +62,7 @@ def invoke_dialog_flow(text):
     return response.query_result.fulfillment_text
 
 
-def text_message(bot, update):
+def handle_text_message(bot, update):
     try:
         dialogflow_response = invoke_dialog_flow(update.message.text)
         bot.send_message(
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     logger.info('Bot {0} has started!'.format(__file__))
     dispatcher = updater.dispatcher
     start_handler = CommandHandler('start', start)
-    text_msg_handler = MessageHandler(Filters.text, text_message)
+    text_msg_handler = MessageHandler(Filters.text, handle_text_message)
     dispatcher.add_handler(text_msg_handler)
     dispatcher.add_handler(start_handler)
     updater.start_polling()
