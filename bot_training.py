@@ -73,7 +73,6 @@ if __name__ == '__main__':
     environ['GOOGLE_APPLICATION_CREDENTIALS'] = getenv('GOOGLE_CRED')
     dialogflow_project_id = getenv('DIALOG_FLOW_ID')
     cli_args = arg_parser()
-    cli_args = arg_parser()
     intent_file = cli_args.intent_file
     raw_intent_json = load_json(intent_file)
     intent_list = parse_json_for_dialog_flow_intent(
